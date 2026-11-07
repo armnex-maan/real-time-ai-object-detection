@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Real-Time AI Object Detection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">●</span>
+      <span class="title">Real-Time AI Object Detection</span>
+    </div>
+    <div class="model-chip" title="Active YOLO model">
+      <span class="dot"></span>
+      <span>{{ model_name }}</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="video-card">
+      <div class="video-wrap">
+        <img id="videoStream" src="{{ url_for('video_feed') }}" alt="Live detection feed" />
+        <div class="video-overlay">
+          <span class="live-pill">● LIVE</span>
+          <span id="fpsBadge" class="fps-badge">-- FPS</span>
+        </div>
+      </div>
+      <div class="video-footer">
+        <button id="resetBtn" class="btn">Reset statistics</button>
+        <span id="uptime" class="muted">Uptime: 0s</span>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">FPS</div>
+        <div id="statFps" class="stat-value">0.0</div>
+        <canvas id="fpsSpark" width="320" height="56"></canvas>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Objects on screen</div>
+        <div id="statOnScreen" class="stat-value">0</div>
+        <div id="statOnScreenBreak" class="stat-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Frames processed</div>
+        <div id="statFrames" class="stat-value">0</div>
+        <div class="stat-sub">Total detections: <span id="statTotal">0</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique classes seen</div>
+        <div id="statUnique" class="stat-value">0</div>
+        <div class="stat-sub">of {{ class_names | length }} possible</div>
+      </div>
+    </section>
+
+    <section class="panel top-classes">
+      <h2>Top detected classes</h2>
+      <div id="topClasses" class="bars">
+        <p class="muted">Waiting for detections…</p>
+      </div>
+    </section>
+
+    <section class="panel current-objects">
+      <h2>On screen right now</h2>
+      <div id="currentObjects" class="chips">
+        <p class="muted">Nothing detected yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Built with YOLOv8 · OpenCV · Flask</span>
+  </footer>
+
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
